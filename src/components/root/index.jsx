@@ -1,5 +1,5 @@
 import React, { memo } from 'react'
-import { Link, useLoaderData,Form } from 'react-router-dom'
+import { Link, useLoaderData,Form, redirect } from 'react-router-dom'
 import { getContacts ,createContact} from '../../contacts'
 const Root = memo(() => {
     const { contacts } = useLoaderData()
@@ -69,7 +69,8 @@ export const loader = async () => {
 }
 
 export const action = async () => {
-    await createContact()
+    const contact = await createContact()
+    return redirect(`/contacts/${contact.id}/edit`)
 }
 
 export default Root

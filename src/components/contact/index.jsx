@@ -1,16 +1,10 @@
 import React, { memo } from 'react'
-import { Form } from 'react-router-dom'
+import { Form, useLoaderData } from 'react-router-dom'
+import { getContact } from '../../contacts'
 
 const Contact = memo(() => {
 
-    const contact = {
-        first: "Your",
-        last: "Name",
-        avatar: "https://placekitten.com/g/200/200",
-        twitter: "your_handle",
-        notes: "Some notes",
-        favorite: true,
-    }
+    const contact = useLoaderData()
 
     return (
         <div id="contact">
@@ -92,6 +86,10 @@ const Favorite = ({ contact }) => {
             </button>
         </Form>
     )
+}
+
+export const loader = async ({ params }) => {
+    return await getContact(params.contactId)
 }
 
 export default Contact

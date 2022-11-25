@@ -4,6 +4,7 @@ import Root from '../../components/root'
 
 const Home = memo(() => {
     return (
+        
         <>
             <Root />
 
