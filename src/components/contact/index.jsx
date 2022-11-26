@@ -92,4 +92,5 @@ export const loader = async ({ params }) => {
     return await getContact(params.contactId)
 }
 
+
 export default Contact

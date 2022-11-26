@@ -1,16 +1,15 @@
 import { createBrowserRouter } from 'react-router-dom'
-import Root from '../pages/root'
+import Root from '../components/root'
 
-import ErrorPage from '../pages/error-page'
+import ErrorPage from '../components/error-page'
 import Contact from '../components/contact'
 import Edit from '../components/edit'
+import Default from '../components/default'
 
-import { loader as contactLoader } from '../components/contact'
 import { action as editAction } from '../components/edit'
-import {
-    loader as rootLoader,
-    action as rootAction,
-} from '../components/root'
+import { loader as contactLoader } from '../components/contact'
+import { loader as rootLoader, action as rootAction, } from '../components/root'
+import { action as destroyAction } from '../components/destroy'
 
 const config = [
     {
@@ -21,15 +20,25 @@ const config = [
         action: rootAction,
         children: [
             {
+                index: true,
+                element: <Default />
+            },
+            {
                 path: "contacts/:contactId",
                 element: <Contact />,
-                loader: contactLoader
+                loader: contactLoader,
+
             },
             {
                 path: "contacts/:contactId/edit",
                 element: <Edit />,
                 loader: contactLoader,
                 action: editAction
+            },
+            {
+                path: "contacts/:contactId/destroy",
+                errorElement: <div>Oops! There was an error.</div>,
+                action: destroyAction
             }
         ]
     },
