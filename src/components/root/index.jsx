@@ -1,6 +1,6 @@
 import React, { memo, useState } from 'react'
 import { NavLink, useLoaderData, Form, redirect, Outlet, useNavigation, useSubmit } from 'react-router-dom'
-import { getContacts, createContact } from '../../contacts'
+import { getContacts, createContact } from '../../utils/contacts'
 const Root = memo(() => {
     // console.log(useLoaderData())
     const { contacts, q } = useLoaderData()
@@ -104,6 +104,7 @@ const Root = memo(() => {
 export const loader = async ({ request }) => {
     const url = new URL(request.url)
     const q = url.searchParams.get("q")
+    // console.log(q)
     const contacts = await getContacts(q)
     //return an object
     return { contacts, q }

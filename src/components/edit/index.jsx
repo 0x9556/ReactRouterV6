@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 import { Form, redirect, useLoaderData, useNavigate } from 'react-router-dom'
-import { updateContact } from '../../contacts'
+import { updateContact } from '../../utils/contacts'
 
 const Edit = memo(() => {
     const contact = useLoaderData()

@@ -7,7 +7,7 @@ import Edit from '../components/edit'
 import Default from '../components/default'
 
 import { action as editAction } from '../components/edit'
-import { loader as contactLoader } from '../components/contact'
+import { loader as contactLoader, action as contactAction } from '../components/contact'
 import { loader as rootLoader, action as rootAction, } from '../components/root'
 import { action as destroyAction } from '../components/destroy'
 
@@ -20,30 +20,33 @@ const config = [
         action: rootAction,
         children: [
             {
-                index: true,
-                element: <Default />
-            },
-            {
-                path: "contacts/:contactId",
-                element: <Contact />,
-                loader: contactLoader,
+                errorElement: <ErrorPage />,
+                children: [
+                    {
+                        index: true,
+                        element: <Default />
+                    },
+                    {
+                        path: "contacts/:contactId",
+                        element: <Contact />,
+                        loader: contactLoader,
+                        action: contactAction
 
-            },
-            {
-                path: "contacts/:contactId/edit",
-                element: <Edit />,
-                loader: contactLoader,
-                action: editAction
-            },
-            {
-                path: "contacts/:contactId/destroy",
-                errorElement: <div>Oops! There was an error.</div>,
-                action: destroyAction
+                    },
+                    {
+                        path: "contacts/:contactId/edit",
+                        element: <Edit />,
+                        loader: contactLoader,
+                        action: editAction
+                    },
+                    {
+                        path: "contacts/:contactId/destroy",
+                        errorElement: <div>Oops! There was an error.</div>,
+                        action: destroyAction
+                    }
+                ]
             }
         ]
-    },
-    {
-
     }
 ]
 

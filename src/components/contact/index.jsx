@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
-import { Form, useLoaderData } from 'react-router-dom'
-import { getContact } from '../../contacts'
+import { Form, useFetcher, useLoaderData } from 'react-router-dom'
+import { getContact, updateContact } from '../../utils/contacts'
 
 const Contact = memo(() => {
 
@@ -70,9 +70,15 @@ const Contact = memo(() => {
 
 //destructuring props
 const Favorite = ({ contact }) => {
-    let favorite = contact.favorite;
+    let favorite = contact.favorite
+    const fetcher = useFetcher()
+
+    if (fetcher.formData) {
+        favorite = fetcher.formData.get("favorite") === "true"
+    }
+
     return (
-        <Form method="post">
+        <fetcher.Form method="post">
             <button
                 name="favorite"
                 value={favorite ? "false" : "true"}
@@ -84,12 +90,38 @@ const Favorite = ({ contact }) => {
             >
                 {favorite ? "★" : "☆"}
             </button>
-        </Form>
+        </fetcher.Form>
     )
 }
 
 export const loader = async ({ params }) => {
-    return await getContact(params.contactId)
+    const { contactId } = params
+    if (!contactId) {
+        throw new Response("", {
+            status: 404,
+            statusText: "not found"
+        })
+    } else {
+        const contact = await getContact(contactId)
+        if (!contact) {
+            throw new Response("", {
+                status: 404,
+                statusText: "contact not found"
+            })
+        } else return contact
+    }
+
+}
+
+export const action = async ({ request, params }) => {
+
+    const { contactId } = params
+    let formData = await request.formData()
+
+    return updateContact(contactId, {
+        favorite: formData.get("favorite") === "true"
+    })
+
 }
 
 
